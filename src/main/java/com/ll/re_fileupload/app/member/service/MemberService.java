@@ -40,10 +40,16 @@ public class MemberService {
 
         memberRepository.save(member);
 
+//        member.setProfileImg(profileImgRelPath);
+
         return member;
     }
 
     private String saveProfileImg(MultipartFile profileImg) {
+        if ( profileImg == null || profileImg.isEmpty() ) {
+            return null;
+        }
+
         String profileImgDirName = getCurrentProfileImgDirName(); // 폴더명 : member/년월일
 
         String ext = Util.file.getExt(profileImg.getOriginalFilename()); // 오리지널 사진의 확장자를 그대로 가져옴
@@ -97,7 +103,6 @@ public class MemberService {
     }
 
     public void modify(Member member, String email, MultipartFile profileImg) {
-        removeProfileImg(member);
         String profileImgRelPath = saveProfileImg(profileImg);
 
         member.setEmail(email);
