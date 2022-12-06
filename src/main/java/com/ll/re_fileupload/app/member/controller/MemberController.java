@@ -25,6 +25,7 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String showJoin() {
         return "member/join";
@@ -62,6 +63,7 @@ public class MemberController {
         return "member/profile";
     }
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String showLogin() {
         return "member/login";
