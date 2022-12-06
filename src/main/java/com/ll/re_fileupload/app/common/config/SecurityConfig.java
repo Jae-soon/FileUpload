@@ -27,7 +27,12 @@ public class SecurityConfig {
                         formLogin -> formLogin
                                 .loginPage("/member/login") // GET
                                 .loginProcessingUrl("/member/login") // POST
+                )
+                // 없어도 된다.
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
                 );
+
         return http.build();
     }
 
