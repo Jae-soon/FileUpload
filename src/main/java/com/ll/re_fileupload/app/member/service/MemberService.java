@@ -1,5 +1,6 @@
 package com.ll.re_fileupload.app.member.service;
 
+import com.ll.re_fileupload.app.common.util.Util;
 import com.ll.re_fileupload.app.member.entity.Member;
 import com.ll.re_fileupload.app.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +33,11 @@ public class MemberService implements UserDetailsService {
     }
 
     public Member join(String username, String password, String email, MultipartFile profileImg) {
-        String profileImgDirName = "member";
-        String fileName = UUID.randomUUID().toString() + ".png";
+        String profileImgDirName = "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd"); // 폴더명 : member/년월일
+
+        String ext = Util.file.getExt(profileImg.getOriginalFilename()); // 오리지널 사진의 확장자를 그대로 가져옴
+
+        String fileName = UUID.randomUUID() + "." + ext;
         String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
         String profileImgFilePath = profileImgDirPath + "/" + fileName;
 
