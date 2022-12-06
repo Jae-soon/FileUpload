@@ -71,6 +71,22 @@ public class MemberController {
         return "member/login";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify")
+    public String showModify() {
+        return "member/modify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify")
+    public String modify(@AuthenticationPrincipal MemberContext context, String email, MultipartFile profileImg) {
+        Member member = memberService.getMemberById(context.getId());
+
+        memberService.modify(member, email, profileImg);
+
+        return "redirect:/member/profile";
+    }
+
     @GetMapping("/profile/img/{id}")
     public ResponseEntity<Object> showProfileImg(@PathVariable Long id) throws URISyntaxException {
         URI redirectUri = new URI(memberService.getMemberById(id).getProfileImgUrl());
