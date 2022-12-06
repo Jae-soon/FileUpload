@@ -1,4 +1,4 @@
-package com.ll.re_fileupload.app.common;
+package com.ll.re_fileupload.app.common.testData;
 
 import com.ll.re_fileupload.app.member.service.MemberService;
 import org.springframework.boot.CommandLineRunner;
