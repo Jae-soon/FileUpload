@@ -2,12 +2,17 @@ package com.ll.re_fileupload.app.article.service;
 
 import com.ll.re_fileupload.app.article.entity.Article;
 import com.ll.re_fileupload.app.article.repository.GenFileRepository;
+import com.ll.re_fileupload.app.common.config.BaseConfig;
+import com.ll.re_fileupload.app.common.dto.RsData;
 import com.ll.re_fileupload.app.common.util.Util;
 import com.ll.re_fileupload.app.fileUpload.entity.GenFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -15,12 +20,18 @@ import java.util.Map;
 public class GenFileService {
     private final GenFileRepository genFileRepository;
 
-    public void saveFiles(Article article, Map<String, MultipartFile> fileMap) {
+    public RsData<Map<String, GenFile>> saveFiles(Article article, Map<String, MultipartFile> fileMap) {
         String relTypeCode = "article";
         long relId = article.getId();
 
+        Map<String, GenFile> genFileIds = new HashMap<>();
+
         for (String inputName : fileMap.keySet()) {
             MultipartFile multipartFile = fileMap.get(inputName);
+
+            if (multipartFile.isEmpty()) {
+                continue;
+            }
 
             String[] inputNameBits = inputName.split("__");
 
@@ -50,6 +61,21 @@ public class GenFileService {
                     .build();
 
             genFileRepository.save(genFile);
+            String filePath = BaseConfig.GET_FILE_DIR_PATH + "/" + fileDir + "/" + genFile.getFileName();
+
+            File file = new File(filePath);
+
+            file.getParentFile().mkdirs();
+
+            try {
+                multipartFile.transferTo(file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            genFileIds.put(inputName, genFile);
         }
+
+        return new RsData("S-1", "파일을 업로드했습니다.", genFileIds);
     }
 }

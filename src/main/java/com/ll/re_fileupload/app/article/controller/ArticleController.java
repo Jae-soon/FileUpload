@@ -5,6 +5,8 @@ import com.ll.re_fileupload.app.article.entity.Article;
 import com.ll.re_fileupload.app.article.service.ArticleService;
 import com.ll.re_fileupload.app.article.service.GenFileService;
 import com.ll.re_fileupload.app.common.dto.MemberContext;
+import com.ll.re_fileupload.app.common.dto.RsData;
+import com.ll.re_fileupload.app.fileUpload.entity.GenFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,7 +48,7 @@ public class ArticleController {
 
         Article article = articleService.write(memberContext.getId(), articleForm.getSubject(), articleForm.getContent());
 
-        genFileService.saveFiles(article, fileMap);
+        RsData<Map<String, GenFile>> saveFilesRsData = genFileService.saveFiles(article, fileMap);
 
         return "작업중";
     }
