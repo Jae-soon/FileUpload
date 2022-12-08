@@ -25,4 +25,8 @@ public class ArticleService {
 
         return article;
     }
+
+    public Article getArticleById(Long id) {
+        return articleRepository.findById(id).orElse(null);
+    }
 }
