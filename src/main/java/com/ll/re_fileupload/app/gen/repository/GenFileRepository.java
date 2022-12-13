@@ -1,6 +1,6 @@
-package com.ll.re_fileupload.app.article.repository;
+package com.ll.re_fileupload.app.gen.repository;
 
-import com.ll.re_fileupload.app.fileUpload.entity.GenFile;
+import com.ll.re_fileupload.app.gen.entity.GenFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

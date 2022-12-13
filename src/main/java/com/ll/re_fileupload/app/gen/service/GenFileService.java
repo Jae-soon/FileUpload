@@ -1,11 +1,11 @@
-package com.ll.re_fileupload.app.article.service;
+package com.ll.re_fileupload.app.gen.service;
 
 import com.ll.re_fileupload.app.article.entity.Article;
-import com.ll.re_fileupload.app.article.repository.GenFileRepository;
 import com.ll.re_fileupload.app.common.config.BaseConfig;
 import com.ll.re_fileupload.app.common.dto.RsData;
 import com.ll.re_fileupload.app.common.util.Util;
-import com.ll.re_fileupload.app.fileUpload.entity.GenFile;
+import com.ll.re_fileupload.app.gen.entity.GenFile;
+import com.ll.re_fileupload.app.gen.repository.GenFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,10 +90,11 @@ public class GenFileService {
     public GenFile save(GenFile genFile) {
         Optional<GenFile> opOldGenFile = genFileRepository.findByRelTypeCodeAndRelIdAndTypeCodeAndType2CodeAndFileNo(genFile.getRelTypeCode(), genFile.getRelId(), genFile.getTypeCode(), genFile.getType2Code(), genFile.getFileNo());
 
+        // 과거의 이미지를 싹다 제거
         if (opOldGenFile.isPresent()) {
             GenFile oldGenFile = opOldGenFile.get();
             deleteFileFromStorage(oldGenFile);
-
+            // 새로운 이미지를 불러옴
             oldGenFile.merge(genFile);
 
             genFileRepository.save(oldGenFile);
@@ -165,5 +166,9 @@ public class GenFileService {
                         (genFile1, genFile2) -> genFile1,
                         LinkedHashMap::new
                 ));
+    }
+
+    public Optional<GenFile> getById(Long id) {
+        return genFileRepository.findById(id);
     }
 }

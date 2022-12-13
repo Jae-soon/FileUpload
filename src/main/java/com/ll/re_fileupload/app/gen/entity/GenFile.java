@@ -1,4 +1,4 @@
-package com.ll.re_fileupload.app.fileUpload.entity;
+package com.ll.re_fileupload.app.gen.entity;
 
 import com.ll.re_fileupload.app.common.config.BaseConfig;
 import com.ll.re_fileupload.app.common.entity.BaseEntity;
@@ -51,5 +51,9 @@ public class GenFile extends BaseEntity {
 
     public String getFilePath() {
         return BaseConfig.GET_FILE_DIR_PATH + "/" + getFileDir() + "/" + getFileName();
+    }
+
+    public String getDownloadUrl() {
+        return "/download/gen/" + getId();
     }
 }

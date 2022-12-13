@@ -2,7 +2,8 @@ package com.ll.re_fileupload.app.article.service;
 
 import com.ll.re_fileupload.app.article.entity.Article;
 import com.ll.re_fileupload.app.article.repository.ArticleRepository;
-import com.ll.re_fileupload.app.fileUpload.entity.GenFile;
+import com.ll.re_fileupload.app.gen.service.GenFileService;
+import com.ll.re_fileupload.app.gen.entity.GenFile;
 import com.ll.re_fileupload.app.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
