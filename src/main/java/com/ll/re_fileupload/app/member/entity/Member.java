@@ -1,5 +1,6 @@
 package com.ll.re_fileupload.app.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ll.re_fileupload.app.common.config.BaseConfig;
 import com.ll.re_fileupload.app.common.entity.BaseEntity;
 import lombok.*;
@@ -19,6 +20,7 @@ import java.io.File;
 public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
+    @JsonIgnore // 순환참조를 위한 방법 -> 해당 property는 null로 생성
     private String password;
     private String email;
     private String profileImg;
