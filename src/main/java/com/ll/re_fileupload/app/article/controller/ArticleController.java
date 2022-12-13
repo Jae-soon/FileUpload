@@ -98,7 +98,5 @@ public class ArticleController {
 
         String msg = Util.url.encode("%d번 게시물이 수정되었습니다.".formatted(id));
         return "redirect:/article/%d?msg=%s".formatted(id, msg);
-
-        return "/article/%d".formatted(id);
     }
 }
