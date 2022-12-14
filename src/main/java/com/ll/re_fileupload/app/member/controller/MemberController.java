@@ -70,7 +70,13 @@ public class MemberController {
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
-    public String showLogin() {
+    public String showLogin(HttpServletRequest request) {
+        // referer : 페이지를 요청한 이전 페이지가 무엇인지를 알려주는 정보 -> 로그분석에 사용
+        String uri = request.getHeader("Referer");
+        if (uri != null && !uri.contains("/member/login")) {
+            request.getSession().setAttribute("prevPage", uri);
+        }
+
         return "member/login";
     }
 
