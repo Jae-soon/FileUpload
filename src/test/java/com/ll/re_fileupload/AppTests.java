@@ -1,5 +1,9 @@
 package com.ll.re_fileupload;
 
+import com.ll.re_fileupload.app.article.entity.Article;
+import com.ll.re_fileupload.app.article.service.ArticleService;
+import com.ll.re_fileupload.app.hashTag.entity.HashTag;
+import com.ll.re_fileupload.app.hashTag.service.HashTagService;
 import com.ll.re_fileupload.app.home.controller.HomeController;
 import com.ll.re_fileupload.app.member.controller.MemberController;
 import com.ll.re_fileupload.app.member.entity.Member;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -33,14 +38,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@ActiveProfiles({"base-addi", "test"})
+@ActiveProfiles("test")
 class AppTests {
 
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private HashTagService hashTagService;
+    @Autowired
+    private ArticleService articleService;
 
     @Test
     @DisplayName("메인화면에서는 안녕이 나와야 한다.")
@@ -145,5 +153,16 @@ class AppTests {
         assertThat(member).isNotNull();
 
         memberService.removeProfileImg(member);
+    }
+
+
+
+    @Test
+    @DisplayName("1번 게시물에는 키워드가 2개 존재한다.")
+    void t6() {
+        Article article = articleService.getArticleById(1L);
+        List<HashTag> hashTags = hashTagService.getHashTags(article);
+
+        assertThat(hashTags.size()).isEqualTo(2);
     }
 }
