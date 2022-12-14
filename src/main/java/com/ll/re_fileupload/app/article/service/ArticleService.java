@@ -79,6 +79,10 @@ public class ArticleService {
     }
 
     public List<Article> getArticles() {
-        return articleRepository.findAllByOrderByIdDesc();
+        return articleRepository.getQslArticlesOrderByIdDesc();
+    }
+
+    public List<Article> search(String kwType, String kw) {
+        return articleRepository.searchQsl(kwType, kw);
     }
 }
