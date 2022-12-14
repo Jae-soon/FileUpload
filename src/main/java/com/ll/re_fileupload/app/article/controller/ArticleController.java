@@ -104,6 +104,12 @@ public class ArticleController {
     @GetMapping("/list")
     public String showList(Model model) {
         List<Article> articles = articleService.getArticles();
+
+        // List에 저장된 extra 불러오기
+        for ( Article article : articles ) {
+            articleService.loadForPrintData(article);
+        }
+
         model.addAttribute("articles", articles);
 
         return "article/list";
