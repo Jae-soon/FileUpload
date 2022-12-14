@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -98,5 +99,13 @@ public class ArticleController {
 
         String msg = Util.url.encode("%d번 게시물이 수정되었습니다.".formatted(id));
         return "redirect:/article/%d?msg=%s".formatted(id, msg);
+    }
+
+    @GetMapping("/list")
+    public String showList(Model model) {
+        List<Article> articles = articleService.getArticles();
+        model.addAttribute("articles", articles);
+
+        return "article/list";
     }
 }
