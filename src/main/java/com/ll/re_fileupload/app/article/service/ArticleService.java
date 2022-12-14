@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
@@ -88,5 +91,43 @@ public class ArticleService {
 
         article.getExtra().put("hashTags", hashTags);
         article.getExtra().put("genFileMap", genFileMap);
+    }
+
+    public void loadForPrintData(List<Article> articles) {
+        long[] ids = articles
+                .stream()
+                .mapToLong(Article::getId)
+                .toArray();
+
+        List<HashTag> hashTagsByArticleIds = hashTagService.getHashTagsByArticleIdIn(ids);
+
+        Map<Long, List<HashTag>> hashTagsByArticleIdsMap = hashTagsByArticleIds.stream()
+                .collect(groupingBy(
+                        hashTag -> hashTag.getArticle().getId(), toList()
+                ));
+
+        articles.stream().forEach(article -> {
+            List<HashTag> hashTags = hashTagsByArticleIdsMap.get(article.getId());
+
+            if (hashTags == null || hashTags.size() == 0) return;
+
+            article.getExtra().put("hashTags", hashTags);
+        });
+
+        List<GenFile> genFilesByRelIdIn = genFileService.getRelGenFilesByRelIdIn("article", ids);
+
+        Map<Long, List<GenFile>> genFilesMap = genFilesByRelIdIn
+                .stream()
+                .collect(groupingBy(
+                        GenFile::getRelId, toList()
+                ));
+
+        articles.stream().forEach(article -> {
+            List<GenFile> genFiles = genFilesMap.get(article.getId());
+
+            if (genFiles == null || genFiles.size() == 0) return;
+
+            article.getExtra().put("genFileMap", genFileService.getRelGenFileMap(genFiles));
+        });
     }
 }

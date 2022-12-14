@@ -106,9 +106,7 @@ public class ArticleController {
         List<Article> articles = articleService.getArticles();
 
         // List에 저장된 extra 불러오기
-        for ( Article article : articles ) {
-            articleService.loadForPrintData(article);
-        }
+        articleService.loadForPrintData(articles);
 
         model.addAttribute("articles", articles);
 
