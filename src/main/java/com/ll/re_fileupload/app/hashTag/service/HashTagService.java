@@ -20,10 +20,10 @@ public class HashTagService {
     private final KeywordService keywordService;
     private final HashTagRepository hashTagRepository;
 
-    public void applyHashTags(Article article, String keywordContentsStr) {
+    public void applyHashTags(Article article, String hashTagContents) {
         List<HashTag> oldHashTags = getHashTags(article);
 
-        List<String> keywordContents = Arrays.stream(keywordContentsStr.split("#"))
+        List<String> keywordContents = Arrays.stream(hashTagContents.split("#"))
                 .map(String::trim)
                 .filter(s -> s.length() > 0)
                 .collect(Collectors.toList());
@@ -47,8 +47,8 @@ public class HashTagService {
         });
     }
 
-    private HashTag saveHashTag(Article article, String keywordContent) {
-        Keyword keyword = keywordService.save(keywordContent);
+    private HashTag saveHashTag(Article article, String hashTagContents) {
+        Keyword keyword = keywordService.save(hashTagContents);
 
         Optional<HashTag> opHashTag = hashTagRepository.findByArticleIdAndKeywordId(article.getId(), keyword.getId());
 

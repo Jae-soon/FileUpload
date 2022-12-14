@@ -24,12 +24,17 @@ public class ArticleService {
         return write(new Member(authorId), subject, content);
     }
 
+
+    public Article write(Long authorId, String subject, String content, String hashTagContents) {
+        return write(new Member(authorId), subject, content, hashTagContents);
+    }
+
     // 해시태그가 없을 경우 빈칸으로
     public Article write(Member author, String subject, String content) {
         return write(author, subject, content, "");
     }
 
-    public Article write(Member author, String subject, String content, String hashTagsStr) {
+    public Article write(Member author, String subject, String content, String hashTagContents) {
         Article article = Article
                 .builder()
                 .author(author)
@@ -40,7 +45,7 @@ public class ArticleService {
         articleRepository.save(article);
 
         // 해시태그 저장
-        hashTagService.applyHashTags(article, hashTagsStr);
+        hashTagService.applyHashTags(article, hashTagContents);
 
         return article;
     }
